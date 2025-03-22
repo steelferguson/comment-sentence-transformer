@@ -23,10 +23,13 @@ class MultiTaskDistilBERT(nn.Module):
         elif task == "sentiment":
             return self.sentiment_head(output)  # Sentiment logits
 
-def load_model(model_name="distilbert-base-uncased"):
-    """Helper function to load tokenizer and model."""
+def load_model(model_name="distilbert-base-uncased", model_path=None):
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     transformer = AutoModel.from_pretrained(model_name)
     model = MultiTaskDistilBERT(transformer)
+
+    if model_path and os.path.exists(model_path):
+        model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+
     return tokenizer, model

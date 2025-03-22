@@ -1,8 +1,11 @@
 import torch
 from multi_task_distilbert import load_model
+from sample_reviews import SAMPLE_SET
 
 def predict(sentence):
     tokenizer, model = load_model()
+    ## use our own traine models once we finalize that piece
+    # tokenizer, model = load_model(model_path="models/multi_task_model.pt")
     model.eval()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
@@ -20,4 +23,6 @@ def predict(sentence):
 
 sentence = "I am undecided about my sentiment!"
 
-print(predict(sentence))
+for sentence in SAMPLE_SET:
+    print(sentence)
+    print(predict(sentence))
