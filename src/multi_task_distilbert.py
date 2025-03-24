@@ -1,9 +1,15 @@
 import torch
 import torch.nn as nn
 from transformers import AutoModel
+from config import SENTIMENT_MAP, CLASSIFICATION_MAP
 
 class MultiTaskDistilBERT(nn.Module):
-    def __init__(self, transformer_model, num_classes_classification=4, num_classes_sentiment=3):
+    def __init__(
+            self, 
+            transformer_model, 
+            num_classes_classification=len(CLASSIFICATION_MAP), 
+            num_classes_sentiment=len(SENTIMENT_MAP)
+        ):
         super().__init__()
         self.encoder = transformer_model  # Shared transformer backbone
         hidden_size = self.encoder.config.hidden_size  # 768 for DistilBERT
